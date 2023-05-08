@@ -35,6 +35,8 @@ struct ThreadArgs {
 
 extern struct Player player;
 
+void threadArgs_init(struct ThreadArgs *self, struct Player *player, element (*board)[HEIGHT]);
+
 void player_init(struct Player *self);
 void player_hit(struct Player *self, int damage);
 void player_shoot(struct Player *self);

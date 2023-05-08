@@ -14,6 +14,11 @@ const int INITIAL_HEALTH;
 
 static void player_moveOnBoard(struct Player *self, element (*board)[HEIGHT]);
 
+void threadArgs_init(struct ThreadArgs *self, struct Player *player, element (*board)[HEIGHT]) {
+    self->player = player;
+    self->board = board;
+}
+
 void player_init(struct Player *self) {
     self->x = INITIAL_X;
     self->y = INITIAL_Y;
@@ -28,27 +33,31 @@ void player_shoot(struct Player *self) {
 
 DWORD WINAPI player_actionCheck(LPVOID argsVoid) {
     struct ThreadArgs *args = argsVoid;
-    if (kbhit()) {
-        switch (getch()) {
-        case RIGHT_KEY:
-            args->player->dir = RIGHT;
-            player_moveOnBoard(args->player, args->board);
-            break;
-        case LEFT_KEY:
-            args->player->dir = LEFT;
-            player_moveOnBoard(args->player, args->board);
-            break;
-        case UP_KEY:
-            args->player->dir = UP;
-            player_moveOnBoard(args->player, args->board);
-            break;
-        case DOWN_KEY:
-            args->player->dir = DOWN;
-            player_moveOnBoard(args->player, args->board);
-            break;
-        case SHOOT_KEY:
-            player_shoot(args->player);
-            break;
+    while (1) {
+        if (kbhit()) {
+            switch (getch()) {
+            case RIGHT_KEY:
+                args->player->dir = RIGHT;
+                player_moveOnBoard(args->player, args->board);
+                break;
+            case LEFT_KEY:
+                args->player->dir = LEFT;
+                player_moveOnBoard(args->player, args->board);
+                break;
+            case UP_KEY:
+                args->player->dir = UP;
+                player_moveOnBoard(args->player, args->board);
+                break;
+            case DOWN_KEY:
+                args->player->dir = DOWN;
+                player_moveOnBoard(args->player, args->board);
+                break;
+            case SHOOT_KEY:
+                player_shoot(args->player);
+                break;
+            }
+            
+            Sleep(GAME_TICK);
         }
     }
 }

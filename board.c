@@ -11,7 +11,8 @@ element board[WIDTH][HEIGHT];
 HANDLE bulletThread;
 HANDLE cannonThread;
 HANDLE playerThread;
-const int GAME_TICK = 20;
+struct ThreadArgs plThrArgs;
+const int GAME_TICK = 40;
 
 int main() {
     setup(board);
@@ -39,7 +40,7 @@ void setup(element (*board)[HEIGHT]) {
     bulletMutex = CreateMutex(NULL, FALSE, NULL);
     bulletThread = CreateThread(NULL, 0, bullets_fly, board, 0, NULL);
     cannonThread = CreateThread(NULL, 0, cannons_shoot, board, 0, NULL);
-    struct ThreadArgs plThrArgs = {&player, board};
+    threadArgs_init(&plThrArgs, &player, board);
     playerThread = CreateThread(NULL, 0, player_actionCheck, &plThrArgs, 0, NULL);
 
     for (int i = 0; i < 5; i++) cannon_create(WIDTH - 2, HEIGHT / 2 + i, LEFT);

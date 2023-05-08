@@ -19,6 +19,7 @@
 typedef char element;
 
 extern element board[WIDTH][HEIGHT];
+extern const int GAME_TICK;
 
 void setup(element (*board)[HEIGHT]);
 void changeBoard(element (*board)[HEIGHT]);
