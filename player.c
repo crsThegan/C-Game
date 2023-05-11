@@ -57,7 +57,7 @@ DWORD WINAPI player_actionCheck(LPVOID argsVoid) {
                 break;
             }
             
-            Sleep(GAME_TICK);
+            Sleep(GAME_TICK * 2);
         }
     }
 }

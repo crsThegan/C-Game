@@ -12,7 +12,7 @@ struct Cannon {
     enum Direction dir;
 };
 
-extern const int FIRE_FREQ;
+extern const int CANNON_RELOAD_TIME;
 extern int cannonCount;
 extern struct Cannon *cannons;
 

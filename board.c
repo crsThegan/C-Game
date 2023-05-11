@@ -14,6 +14,8 @@ HANDLE playerThread;
 struct ThreadArgs plThrArgs;
 const int GAME_TICK = 40;
 
+char tempbuf[64] = {0};
+
 int main() {
     setup(board);
 
@@ -33,9 +35,8 @@ int main() {
 void setup(element (*board)[HEIGHT]) {
     player_init(&player);
 
-    bullets = calloc(1, sizeof(struct Bullet));
-
-    cannons = calloc(1, sizeof(struct Cannon));
+    bullets = calloc(1, sizeof(int));
+    cannons = calloc(1, sizeof(int));
 
     bulletMutex = CreateMutex(NULL, FALSE, NULL);
     bulletThread = CreateThread(NULL, 0, bullets_fly, board, 0, NULL);
@@ -81,10 +82,8 @@ void changeBoard(element (*board)[HEIGHT]) {
                     }
                 }
             }
-            else if (board[x][y] == BLANK_SPACE) {
-                for (int i = 1; i < bulCount; i++) {
-                    if (x == bullets[i].x && y == bullets[i].y) board[x][y] = BULLET;
-                }
+            for (int i = 1; i < bulCount; i++) {
+                if (x == bullets[i].x && y == bullets[i].y) board[x][y] = BULLET;
             }
         }
     }
@@ -97,8 +96,8 @@ void drawBoard(element (*board)[HEIGHT]) {
         puts(boardStr[y]);
     }
 
-    char tempbuf[32];
-    sprintf(tempbuf, "%d", player.dir);
+    //char tempbuf[64] = {0};
+    if (bulCount > 1) sprintf(tempbuf, "%d %d %d", bulCount, bullets[1].x, bullets[1].y);
     puts(tempbuf);
 }
 

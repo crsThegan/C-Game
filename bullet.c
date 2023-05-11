@@ -9,6 +9,8 @@
 #include <string.h>
 #include <Windows.h>
 
+#include <stdio.h>
+
 const int bulletRange = 5;
 
 int bulCount = 1;
@@ -48,6 +50,7 @@ DWORD WINAPI bullets_fly(LPVOID board) {
             bullet_fly(bullets + i, board);
             --bullets[i].distLeft;
         }
+        Sleep(GAME_TICK);
     }
     return 0;
 }
@@ -66,11 +69,10 @@ static inline void bullet_initFromCannon(struct Bullet *self, struct Cannon *sho
     self->dir = shooter->dir;
 
     self->distLeft = bulletRange;
-
-    Sleep(FIRE_FREQ);
 }
 
 static inline void bullet_destroy(struct Bullet *self) {
+    //sprintf(tempbuf, "destroy is working");
     WaitForSingleObject(bulletMutex, INFINITE);
 
     memmove(self, self + 1, bulCount - (self - bullets) - 1); // ~ arr.pop(self); self - arr = index

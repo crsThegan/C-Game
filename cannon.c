@@ -8,7 +8,7 @@
 #include <assert.h>
 #include <Windows.h>
 
-const int FIRE_FREQ = 70;
+const int CANNON_RELOAD_TIME = 1000;
 int cannonCount = 1;
 struct Cannon *cannons;
 
@@ -25,7 +25,7 @@ void cannon_create(int x, int y, enum Direction dir) {
 DWORD WINAPI cannons_shoot(LPVOID board) {
     while (1) {
         for (int i = 1; i < cannonCount; i++) cannon_shoot(cannons + i, board);
-        Sleep(FIRE_FREQ);
+        Sleep(CANNON_RELOAD_TIME);
     }
     return 0;
 }
